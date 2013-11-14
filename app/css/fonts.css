@@ -1,0 +1,49 @@
+@font-face {
+    font-family: UbuntuMonoR;
+    font-style: normal;
+    font-weight: bold;
+    src: url(fonts/UbuntuMono-B.ttf) format('truetype');
+}
+@font-face {
+    font-family: UbuntuMonoBI;
+    font-style: italic;
+    font-weight: bold;
+    src: url(fonts/UbuntuMono-BI.ttf) format('truetype');
+}
+@font-face {
+    font-family: UbuntuMonoR;
+    font-style: normal;
+    font-weight: normal;
+    src: url(fonts/UbuntuMono-R.ttf) format('truetype');
+}
+@font-face {
+    font-family: UbuntuMonoRI;
+    font-style: italic;
+    font-weight: normal;
+    src: url(fonts/UbuntuMono-RI.ttf) format('truetype');
+}
+
+/*@font-face {*/
+    /*font-family: UbuntuMono;*/
+    /*font-style: normal;*/
+    /*font-weight: 400;*/
+    /*src: url(fonts/UbuntuMono-B.ttf) format('truetype');*/
+/*}*/
+/*@font-face {*/
+    /*font-family: UbuntuMono;*/
+    /*font-style: italic;*/
+    /*font-weight: 400;*/
+    /*src: url(fonts/UbuntuMono-BI.ttf) format('truetype');*/
+/*}*/
+/*@font-face {*/
+    /*font-family: UbuntuMono;*/
+    /*font-style: normal;*/
+    /*font-weight: normal;*/
+    /*src: url(fonts/UbuntuMono-R.ttf) format('truetype');*/
+/*}*/
+/*@font-face {*/
+    /*font-family: UbuntuMono;*/
+    /*font-style: italic;*/
+    /*font-weight: normal;*/
+    /*src: url(fonts/UbuntuMono-RI.ttf) format('truetype');*/
+/*}*/
