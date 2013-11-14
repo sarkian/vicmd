@@ -12,6 +12,9 @@ vicmd.Tab.prototype = {
     _tabbar_item: null,
 
     files: null,
+    state: {
+        show_hidden: false
+    },
 
     __init__: function(tabs, path) {
         this._tabs = tabs;

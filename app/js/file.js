@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 14, 16:32
+ * Last Change: 2013 Nov 14, 21:17
  */
 
 if(typeof vicmd === 'undefined')
@@ -64,6 +64,9 @@ vicmd.File = function(data) {
     function scroll(pos) {
         parentjq().mCustomScrollbar('scrollTo', pos);
     }
+
+    if(self.isHidden())
+        selfjq.addClass('_hidden');
 
     return self;
 

@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 14, 18:21
+ * Last Change: 2013 Nov 14, 21:20
  */
 
 if(typeof vicmd === 'undefined')
@@ -34,7 +34,6 @@ vicmd.Files = function(tab) {
 
     self.setPath = function(newpath) {
         var data = vicmd_ui.readdir(newpath);
-        console.log(data);
         if(data.success) {
             self.refresh(data);
             path = newpath;
@@ -53,7 +52,7 @@ vicmd.Files = function(tab) {
         var files = [], dirs = [];
         filesdata.files.forEach(function(data) {
             var node = new vicmd.File(data);
-            if(node.isHidden())
+            if(!tab.state.show_hidden && node.isHidden())
                 node.setVisible(false);
             if(node.isDir())
                 dirs.push(node);
@@ -125,12 +124,12 @@ vicmd.Files = function(tab) {
 
     self.scrollUp = function() {
         var pos = Math.abs(parseInt(container().get(0).style.top));
-        selfjq.mCustomScrollbar('scrollTo', pos - 300);
+        selfjq.mCustomScrollbar('scrollTo', pos - parseInt(selfjq.height() / 2.5));
     };
 
     self.scrollDown = function() {
         var pos = Math.abs(parseInt(container().get(0).style.top));
-        selfjq.mCustomScrollbar('scrollTo', pos + 300);
+        selfjq.mCustomScrollbar('scrollTo', pos + parseInt(selfjq.height() / 2.5));
     };
 
     self.openParent = function() {
@@ -145,6 +144,23 @@ vicmd.Files = function(tab) {
     self.openCurrent = function() {
         var file = self.current();
         file.open();
+    };
+
+    self.toggleHidden = function() {
+        var visible;
+        if(tab.state.show_hidden) {
+            tab.state.show_hidden = false;
+            visible = false;
+        }
+        else {
+            tab.state.show_hidden = true;
+            visible = true;
+        }
+        container().find('._hidden').each(function(item) {
+            this.setVisible(visible);
+        });
+        if(!visible && current.isHidden())
+            self.selectNext();
     };
 
     self.current = function() {

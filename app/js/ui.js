@@ -83,6 +83,10 @@ vicmd.UI = function(container) {
         self.panes.current().tabs.select(i);
     });
 
+    this.kbd.map('I', function() {
+        self.panes.current().tabs.current().files.toggleHidden();
+    });
+
 };
 
 vicmd.UI.prototype = {
