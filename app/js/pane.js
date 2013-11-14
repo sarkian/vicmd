@@ -20,20 +20,6 @@ vicmd.Pane.prototype = {
         $('.pane').removeClass('active');
         this._container.addClass('active');
         this.tabs.setFocus(focus);
-    },
-
-    keydown: function(e) {
-        if(e.ctrlKey) {
-            console.log(e.keyCode);
-            switch(e.keyCode) {
-                case 72:
-                    this.tabs.prev().select();
-                    break;
-                case 76:
-                    this.tabs.next().select();
-                    break;
-            }
-        }
     }
 
 };

@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 13, 17:11
+# Last Change: 2013 Nov 14, 21:54
 
 import os
 import sys
@@ -22,13 +22,9 @@ class ViCmd:
     def __init__(self, dbg=False):
         self.__dbg = dbg
         App.app = QApplication(sys.argv)
-        if dbg:
-            App.window = Window()
-            App.view = App.window.view
-            App.window.show()
-        else:
-            App.view = QWebView()
-            App.view.show()
+        App.window = Window(dbg)
+        App.view = App.window.view
+        App.window.show()
         App.resman = ResourceManager(os.path.dirname(os.path.realpath(__file__)))
         App.ui = UI()
         App.fs = FS()

@@ -41,14 +41,6 @@ vicmd.Panes.prototype = {
         this._current = 'right';
         this.left.setFocus(false);
         this.right.setFocus(true);
-    },
-
-    keydown: function(e) {
-        if(e.keyCode == 9)
-            this.change();
-        else
-            this.current().keydown(e);
-        return false;
     }
 
 };
