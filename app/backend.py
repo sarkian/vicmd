@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 15, 16:41
+# Last Change: 2013 Nov 15, 18:16
 
 import os
 import glob
@@ -10,7 +10,7 @@ from PyQt4.QtGui import *
 from app import App
 
 
-class UI(QObject):
+class Backend(QObject):
 
     @pyqtSlot(QVariant)
     def log(self, val):

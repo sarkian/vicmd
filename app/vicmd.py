@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 14, 21:54
+# Last Change: 2013 Nov 15, 18:23
 
 import os
 import sys
@@ -13,8 +13,7 @@ from window import Window
 from view import View
 from scriptmanager import ScriptManager
 from resourcemanager import ResourceManager
-from ui import UI
-from fs import FS
+from backend import Backend
 
 
 class ViCmd:
@@ -26,16 +25,13 @@ class ViCmd:
         App.view = App.window.view
         App.window.show()
         App.resman = ResourceManager(os.path.dirname(os.path.realpath(__file__)))
-        App.ui = UI()
-        App.fs = FS()
+        App.backend = Backend()
 
     def run(self):
         self._createView()
         App.view.setHtml(self._html)
         App.view.page().mainFrame().addToJavaScriptWindowObject(
-                'vicmd_fs', App.fs)
-        App.view.page().mainFrame().addToJavaScriptWindowObject(
-                'vicmd_ui', App.ui)
+                'backend', App.backend)
         App.app.exec_()
 
     def preview(self):

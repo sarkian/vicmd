@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 14, 21:20
+ * Last Change: 2013 Nov 15, 18:25
  */
 
 if(typeof vicmd === 'undefined')
@@ -33,7 +33,7 @@ vicmd.Files = function(tab) {
     };
 
     self.setPath = function(newpath) {
-        var data = vicmd_ui.readdir(newpath);
+        var data = backend.readdir(newpath);
         if(data.success) {
             self.refresh(data);
             path = newpath;
@@ -48,7 +48,7 @@ vicmd.Files = function(tab) {
 
     self.refresh = function(filesdata) {
         container().empty();
-        var filesdata = filesdata || vicmd_ui.readdir(path);
+        var filesdata = filesdata || backend.readdir(path);
         var files = [], dirs = [];
         filesdata.files.forEach(function(data) {
             var node = new vicmd.File(data);
