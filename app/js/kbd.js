@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 13, 16:32
+ * Last Change: 2013 Nov 15, 14:14
  */
 
 if(typeof vicmd === 'undefined')
@@ -10,7 +10,7 @@ if(typeof vicmd === 'undefined')
 vicmd.Kbd = function(options) {
 
     options = $.extend({
-        target: $('body'),
+        target: document.body,
         caps_as_ctrl: false,
         process_modifiers: false,
         retval: false,
@@ -26,8 +26,9 @@ vicmd.Kbd = function(options) {
     var timer = -1;
     var wait_seqs = [];
 
-    options.target.bind('keydown', function(e) {
-        var event = new vicmd.Kbd.KeyEvt(e.originalEvent);
+    options.target.addEventListener('keydown', function(e) {
+        // var event = new vicmd.Kbd.KeyEvt(e.originalEvent);
+        var event = new vicmd.Kbd.KeyEvt(e);
         if(options.caps_as_ctrl) {
             if(event.code === 20) {
                 caps_pressed = true;
