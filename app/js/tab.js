@@ -10,6 +10,7 @@ vicmd.Tab.prototype = {
     _tabs: null,
     _path: null,
     _tabbar_item: null,
+    _index: 0,
 
     files: null,
     state: {
@@ -44,6 +45,11 @@ vicmd.Tab.prototype = {
         this._tabs._tabbar.find('.tab').removeClass('active');
         this._tabbar_item.addClass('active');
         this._tabs._pathbox.setPath(this._path);
+    },
+
+    close: function() {
+        this._tabbar_item.remove();
+        $(this.files).remove();
     },
 
     _setTabbarItem: function() {

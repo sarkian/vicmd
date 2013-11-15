@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 14, 23:36
+# Last Change: 2013 Nov 15, 16:41
 
 import os
 import glob
@@ -19,8 +19,8 @@ class UI(QObject):
     @pyqtSlot()
     def ready(self):
         self.evalJS('ui.panes.selectLeft()')
-        self.evalJS('ui.panes.left.tabs.add("%s")' % os.path.expanduser('~'))
-        self.evalJS('ui.panes.right.tabs.add("/")')
+        self.evalJS('ui.panes.left.tabs.open("%s")' % os.path.expanduser('~'))
+        self.evalJS('ui.panes.right.tabs.open("/")')
         self.evalJS('ui.panes.left.tabs.select(0)')
         self.evalJS('ui.panes.right.tabs.select(0)')
 

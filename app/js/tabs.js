@@ -53,11 +53,29 @@ vicmd.Tabs.prototype = {
         return i >= this._tabs.length - 1 ? 0 : i + 1;
     },
 
-    add: function(path) {
+    open: function(path) {
         var tab = new vicmd.Tab(this, path);
         this._tabs.push(tab);
         tab._index = this._tabs.length - 1;
         return tab._index;
-    }
+    },
+
+    closeCurrent: function() {
+        if(this._tabs.length < 2)
+            return;
+        var to_close = this._current;
+        if(to_close - 1 in this._tabs)
+            this.select(to_close - 1);
+        else
+            this.select(to_close + 1);
+        this.close(to_close);
+    },
+
+    close: function(index) {
+        this._tabs[index].close();
+        this._tabs.splice(index, 1);
+        for(var i in this._tabs)
+            this._tabs[i]._index = i;
+    },
 
 };

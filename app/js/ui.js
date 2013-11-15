@@ -29,12 +29,14 @@ vicmd.UI = function(container) {
         self.panes.current().tabs.selectNext();
     });
     
-    this.kbd.map('k', function() {
-        self.panes.current().tabs.current().files.selectPrev();
+    this.kbd.map('<count>k', function(c) {
+        for(var i = 0; i < c; i++)
+            self.panes.current().tabs.current().files.selectPrev();
     });
 
-    this.kbd.map('j', function() {
-        self.panes.current().tabs.current().files.selectNext();
+    this.kbd.map('<count>j', function(c) {
+        for(var i = 0; i < c; i++)
+            self.panes.current().tabs.current().files.selectNext();
     });
 
     this.kbd.map('T', function() {
@@ -77,10 +79,14 @@ vicmd.UI = function(container) {
     });
 
     this.kbd.map('tt', function() {
-        var i = self.panes.current().tabs.add(
+        var i = self.panes.current().tabs.open(
             self.panes.current().tabs.current()._path
         );
         self.panes.current().tabs.select(i);
+    });
+
+    this.kbd.map('tw', function() {
+        self.panes.current().tabs.closeCurrent();
     });
 
     this.kbd.map('I', function() {

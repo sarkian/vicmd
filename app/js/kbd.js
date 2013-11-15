@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 15, 14:14
+ * Last Change: 2013 Nov 15, 16:34
  */
 
 if(typeof vicmd === 'undefined')
@@ -60,7 +60,7 @@ vicmd.Kbd = function(options) {
             if(mappings[mode][s].equals(seq))
                 throw new vicmd.Kbd.MappingExistsError(seq.toString(), mode);
         }
-        seq.action = action;
+        seq._action = action;
         mappings[mode].push(seq);
     };
 
@@ -75,11 +75,13 @@ vicmd.Kbd = function(options) {
         wait_seqs = [];
         for(var s in seqs) {
             var seq = seqs[s];
-            if(!seq.first().equals(event))
+            if(event.isNumber() && seq.hasCount())
+                wait_seqs.push(seq.cloneCounted(event.toString()));
+            else if(!seq.first().equals(event))
                 continue;
-            if(seq.len() == 1) {
+            else if(seq.len() == 1) {
                 stopTimer();
-                seq.action();
+                seq.processAction();
                 return;
             }
             else {
@@ -259,6 +261,14 @@ vicmd.Kbd.KeyEvt.prototype = {
             || this.code === 91;
     },
 
+    isNumber: function() {
+        return this.code >= 48 && this.code <= 57;
+    },
+
+    hasModifiers: function() {
+        return this.ctrl || this.shift || this.alt;
+    },
+
     equals: function(event) {
         return event.code === this.code
             && event.ctrl === this.ctrl
@@ -349,8 +359,10 @@ vicmd.Kbd.KeyEvt.modkey_abbrs = {
 
 /*{{{ KeySeq */
 vicmd.Kbd.KeySeq = function(src) {
+    this._has_count = false;
+    this._count = '';
     this._events = [];
-    this.action = function() {};
+    this._action = function() {};
     if(typeof src === 'string')
         return this.fromString(src);
     else if(typeof src === 'object')
@@ -376,6 +388,10 @@ vicmd.Kbd.KeySeq.prototype = {
         return this._events.length;
     },
 
+    hasCount: function() {
+        return this._has_count;
+    },
+
     first: function() {
         return this._events[0];
     },
@@ -384,9 +400,27 @@ vicmd.Kbd.KeySeq.prototype = {
         var events = this._events.slice(0);
         events.shift();
         var seq = new vicmd.Kbd.KeySeq([]);
+        seq._has_count = this._has_count;
+        seq._count = this._count;
         seq._events = events;
-        seq.action = this.action;
+        seq._action = this._action;
         return seq;
+    },
+
+    cloneCounted: function(count) {
+        var seq = new vicmd.Kbd.KeySeq([]);
+        seq._has_count = this._has_count;
+        seq._count = this._count + count;
+        seq._events = this._events.slice(0);
+        seq._action = this._action;
+        return seq;
+    },
+
+    processAction: function() {
+        if(this._has_count)
+            this._action(this._count.length ? parseInt(this._count) : 1);
+        else
+            this._action();
     },
 
     toString: function() {
@@ -408,7 +442,10 @@ vicmd.Kbd.KeySeq.prototype = {
             throw new vicmd.Kbd.InvalidSequenceError(str);
         var s, part;
         for(s in parts) {
-            this._events.push(new vicmd.Kbd.KeyEvt(parts[s]));
+            if(s == 0 && parts[s].toLowerCase() === '<count>')
+                this._has_count = true;
+            else
+                this._events.push(new vicmd.Kbd.KeyEvt(parts[s]));
         }
         return this;
     }
