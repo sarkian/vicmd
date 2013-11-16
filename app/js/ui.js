@@ -51,12 +51,12 @@ vicmd.UI = function(container) {
         self.panes.current().tabs.current().files.selectOnBottom();
     });
 
-    this.kbd.map('<C-k>', function() {
-        self.panes.current().tabs.current().files.scrollUp();
+    this.kbd.map('<count><C-k>', function(c) {
+        self.panes.current().tabs.current().files.scrollUp(c);
     });
 
-    this.kbd.map('<C-j>', function() {
-        self.panes.current().tabs.current().files.scrollDown();
+    this.kbd.map('<count><C-j>', function(c) {
+        self.panes.current().tabs.current().files.scrollDown(c);
     });
 
     this.kbd.map('gg', function() {

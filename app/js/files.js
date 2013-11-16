@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 15, 18:25
+ * Last Change: 2013 Nov 16, 13:25
  */
 
 if(typeof vicmd === 'undefined')
@@ -122,14 +122,16 @@ vicmd.Files = function(tab) {
         // TODO: implement
     };
 
-    self.scrollUp = function() {
+    self.scrollUp = function(c) {
+        c = c || 1;
         var pos = Math.abs(parseInt(container().get(0).style.top));
-        selfjq.mCustomScrollbar('scrollTo', pos - parseInt(selfjq.height() / 2.5));
+        selfjq.mCustomScrollbar('scrollTo', pos - parseInt(selfjq.height() / 2.5) * c);
     };
 
-    self.scrollDown = function() {
+    self.scrollDown = function(c) {
+        c = c || 1;
         var pos = Math.abs(parseInt(container().get(0).style.top));
-        selfjq.mCustomScrollbar('scrollTo', pos + parseInt(selfjq.height() / 2.5));
+        selfjq.mCustomScrollbar('scrollTo', pos + parseInt(selfjq.height() / 2.5) * c);
     };
 
     self.openParent = function() {
