@@ -1,11 +1,14 @@
 # coding: utf-8
-# Last Change: 2013 Nov 15, 21:09
+# Last Change: 2013 Nov 17, 20:29
+
+import time
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4.QtWebKit import *
 
 from view import View
+from app import App
 
 
 class Window(QWidget):
@@ -49,4 +52,8 @@ class Window(QWidget):
 
     def toggleInspector(self):
         self.inspector.setVisible(not self.inspector.isVisible())
+
+    def closeEvent(self, event):
+        App.backend.evalJS('ui.saveState()')
+        pass
 

@@ -78,4 +78,12 @@ vicmd.Tabs.prototype = {
             this._tabs[i]._index = i;
     },
 
+    saveState: function() {
+        var tabs = [];
+        for(var t in this._tabs) {
+            tabs.push(this._tabs[t].saveState());
+        }
+        return tabs;
+    }
+
 };

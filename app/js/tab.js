@@ -13,9 +13,7 @@ vicmd.Tab.prototype = {
     _index: 0,
 
     files: null,
-    state: {
-        show_hidden: false
-    },
+    show_hidden: false,
 
     __init__: function(tabs, path) {
         this._tabs = tabs;
@@ -50,6 +48,13 @@ vicmd.Tab.prototype = {
     close: function() {
         this._tabbar_item.remove();
         $(this.files).remove();
+    },
+
+    saveState: function() {
+        return {
+            path: this._path,
+            show_hidden: this.show_hidden
+        }
     },
 
     _setTabbarItem: function() {

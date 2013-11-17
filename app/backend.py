@@ -1,26 +1,34 @@
 # coding: utf-8
-# Last Change: 2013 Nov 15, 20:10
+# Last Change: 2013 Nov 17, 20:47
 
 import os
 import glob
+import json
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from app import App
+from state import State
 
 
 class Backend(QObject):
 
+    def __init__(self):
+        super(QObject, self).__init__()
+        self.initAppdir()
+        
     @pyqtSlot(QVariant)
     def log(self, val):
         print val.toPyObject()
 
     @pyqtSlot()
     def ready(self):
+        self.loadState()
+        return
         self.evalJS('ui.panes.selectLeft()')
         self.evalJS('ui.panes.left.tabs.open("%s")' % os.path.expanduser('~'))
-        self.evalJS('ui.panes.right.tabs.open("/")')
+        self.evalJS(u'ui.panes.right.tabs.open("/home/sarkian/Downloads/Кино")')
         self.evalJS('ui.panes.left.tabs.select(0)')
         self.evalJS('ui.panes.right.tabs.select(0)')
 
@@ -62,6 +70,52 @@ class Backend(QObject):
             #print res.files
             return res
 
+    @pyqtSlot(QVariant)
+    def saveState(self, _state):
+        state = State().fromQVariant(_state)
+        state.save(os.path.join(self.appdir, 'state.json'))
+
     def evalJS(self, code):
         App.view.page().mainFrame().evaluateJavaScript(code)
+
+    def initAppdir(self):
+        self.homedir = os.path.expanduser('~')
+        if os.path.exists(os.path.join(self.homedir, '.config')):
+            self.appdir = os.path.join(self.homedir, '.config', 'vicmd')
+        else:
+            self.appdir = os.path.join(self.homedir, '.vicmd')
+        if os.path.exists(self.appdir):
+            if not os.path.isdir(self.appdir):
+                os.remove(self.appdir)
+        else:
+            os.mkdir(self.appdir)
+
+    def loadState(self):
+        try:
+            state = State().fromFile(os.path.join(self.appdir, 'state.json'))
+        except IOError:
+            state = State().fromJSON(self.createDefaultState())
+        finally:
+            state.load()
+
+    def createDefaultState(self):
+        state = {
+            'panes': {
+                'left': {
+                    'tabs': [{
+                        'path': os.path.expanduser('~'),
+                        'show_hidden': False
+                    }]
+                },
+                'right': {
+                    'tabs': [{
+                        'path': os.path.expanduser('~'),
+                        'show_hidden': False
+                    }]
+                },
+            }
+        }
+        sfile = open(os.path.join(self.appdir, 'state.json'), 'w+')
+        json.dump(state, sfile, indent=4)
+        return state
 

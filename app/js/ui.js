@@ -93,6 +93,10 @@ vicmd.UI = function(container) {
         self.panes.current().tabs.current().files.toggleHidden();
     });
 
+    this.kbd.map('b', function() {
+        self.tasks.toggle();
+    });
+
 };
 
 vicmd.UI.prototype = {
@@ -101,15 +105,23 @@ vicmd.UI.prototype = {
     _current: null,
 
     panes: null,
+    tasks: null,
 
     __init__: function(container) {
         this._container = $(container);
         this.panes = new vicmd.Panes(this._container.find('.panes'));
+        this.tasks = new vicmd.Tasks(this._container.find('.tasks').get(0));
         this._current = 'panes';
     },
 
     current: function() {
         return this[this._current];
+    },
+
+    saveState: function() {
+        backend.saveState({
+            panes: this.panes.saveState()
+        });
     }
 
 };

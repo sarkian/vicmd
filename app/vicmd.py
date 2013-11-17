@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 15, 18:23
+# Last Change: 2013 Nov 17, 23:37
 
 import os
 import sys
@@ -57,6 +57,8 @@ class ViCmd:
         sm.addScript('panes')
         sm.addScript('file')
         sm.addScript('files')
+        sm.addScript('tasks')
+        sm.addScript('task')
         sm.addScript('kbd')
         sm.addScript('ui')
         sm.addScript('main')

@@ -18,7 +18,6 @@ vicmd.Panes.prototype = {
         var panes = this._container.find('.pane');
         this.left = new vicmd.Pane(panes.get(0));
         this.right = new vicmd.Pane(panes.get(1));
-
     },
 
     current: function() {
@@ -41,6 +40,21 @@ vicmd.Panes.prototype = {
         this._current = 'right';
         this.left.setFocus(false);
         this.right.setFocus(true);
+    },
+
+    select: function(pane) {
+        if(pane === 'left')
+            this.selectLeft();
+        else if(pane === 'right')
+            this.selectRight();
+    },
+
+    saveState: function() {
+        return {
+            left: this.left.saveState(),
+            right: this.right.saveState(),
+            current: this._current
+        };
     }
 
 };

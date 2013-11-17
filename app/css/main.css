@@ -115,6 +115,14 @@ html, body {
     box-shadow: inset 0px 0px 2px 1px #52a8ec;
 }
 
+.tasks-wrapper {
+    vertical-align: top;
+}
+
+.tasks {
+    background-color: #777;
+}
+
 
 #main {
     border: none;

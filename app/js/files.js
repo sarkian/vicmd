@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 16, 13:25
+ * Last Change: 2013 Nov 18, 00:31
  */
 
 if(typeof vicmd === 'undefined')
@@ -52,7 +52,7 @@ vicmd.Files = function(tab) {
         var files = [], dirs = [];
         filesdata.files.forEach(function(data) {
             var node = new vicmd.File(data);
-            if(!tab.state.show_hidden && node.isHidden())
+            if(!tab.show_hidden && node.isHidden())
                 node.setVisible(false);
             if(node.isDir())
                 dirs.push(node);
@@ -150,12 +150,12 @@ vicmd.Files = function(tab) {
 
     self.toggleHidden = function() {
         var visible;
-        if(tab.state.show_hidden) {
-            tab.state.show_hidden = false;
+        if(tab.show_hidden) {
+            tab.show_hidden = false;
             visible = false;
         }
         else {
-            tab.state.show_hidden = true;
+            tab.show_hidden = true;
             visible = true;
         }
         container().find('._hidden').each(function(item) {
