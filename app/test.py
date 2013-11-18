@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-# Last Change: 2013 Nov 17, 20:00
+# Last Change: 2013 Nov 18, 12:16
 
 import os
 import argparse
@@ -11,5 +11,6 @@ from PyQt4.QtGui import *
 from PyQt4.QtWebKit import *
 
 
-s = QString(u'some')
-print unicode(s).encode('utf-8').capitalize()
+a = {'a': 1}
+b = a or {}
+print b

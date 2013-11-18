@@ -28,6 +28,14 @@ vicmd.Tabs.prototype = {
         return this._tabs[this._current];
     },
 
+    first: function() {
+        return this._tabs[0];
+    },
+
+    last: function() {
+        return this._tabs[this._tabs.length - 1];
+    },
+
     selectPrev: function() {
         this.select(this.getPrevIndex());
     },

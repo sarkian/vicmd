@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 17, 20:49
+# Last Change: 2013 Nov 18, 12:27
 
 import json
 
@@ -48,9 +48,15 @@ class State:
         tabs = []
         _tabs = _pane[QString(u'tabs')]
         for tab in _tabs:
+            hist = tab[QString(u'history')] or {}
+            history = {}
+            for path in hist:
+                history[unicode(path).encode('utf-8')] = unicode(hist[path]).encode('utf-8')
             tabs.append({
                 'path': unicode(tab[QString(u'path')]).encode('utf-8'),
-                'show_hidden': tab[QString(u'show_hidden')]
+                'show_hidden': tab[QString(u'show_hidden')],
+                'history': history,
+                'selected': unicode(tab[QString(u'selected')])
             })
         return {
             'tabs': tabs,
@@ -61,4 +67,9 @@ class State:
         pane = self.data['panes'][_pane]
         for tab in pane['tabs']:
             App.backend.evalJS(u'ui.panes.%s.tabs.open("%s")' % (_pane, tab['path']))
+            for path in tab['history']:
+                App.backend.evalJS(u'ui.panes.%s.tabs.last().historyAdd("%s", "%s")'
+                        % (_pane, path, tab['history'][path]))
+            App.backend.evalJS(u'ui.panes.%s.tabs.last().files.selectByName("%s")'
+                    % (_pane, tab['selected']))
         App.backend.evalJS(u'ui.panes.%s.tabs.select(%s)' % (_pane, pane['current_tab']))

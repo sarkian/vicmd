@@ -110,7 +110,7 @@ vicmd.UI.prototype = {
     __init__: function(container) {
         this._container = $(container);
         this.panes = new vicmd.Panes(this._container.find('.panes'));
-        this.tasks = new vicmd.Tasks(this._container.find('.tasks').get(0));
+        this.tasks = new vicmd.Tasks(this._container.find('.tasks-wrapper').get(0));
         this._current = 'panes';
     },
 

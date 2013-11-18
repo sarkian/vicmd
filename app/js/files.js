@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 18, 00:31
+ * Last Change: 2013 Nov 18, 11:41
  */
 
 if(typeof vicmd === 'undefined')
@@ -120,6 +120,15 @@ vicmd.Files = function(tab) {
 
     self.selectOnBottom = function() {
         // TODO: implement
+    };
+
+    self.selectByName = function(name) {
+        var files = selfjq.find('.file-item.visible:contains(' + name + ')');
+        var file = files.get(0);
+        if(file)
+            file.select();
+        else
+            self.select(0);
     };
 
     self.scrollUp = function(c) {

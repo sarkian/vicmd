@@ -11,6 +11,7 @@ vicmd.Tab.prototype = {
     _path: null,
     _tabbar_item: null,
     _index: 0,
+    _history: {},
 
     files: null,
     show_hidden: false,
@@ -34,7 +35,10 @@ vicmd.Tab.prototype = {
                 var tabpath = path;
             this._tabbar_item.text(path);
             this._tabs._pathbox.setPath(path);
-            this.files.select(0);
+            if(this._path in this._history)
+                this.files.selectByName(this._history[this._path]);
+            else
+                this.files.select(0);
         } 
     },
 
@@ -50,11 +54,21 @@ vicmd.Tab.prototype = {
         $(this.files).remove();
     },
 
+    historyAdd: function(path, name) {
+        this._history[path] = name;
+    },
+
+    historySet: function(name) {
+        this._history[this._path] = name;
+    },
+
     saveState: function() {
         return {
             path: this._path,
-            show_hidden: this.show_hidden
-        }
+            show_hidden: this.show_hidden,
+            history: this._history,
+            selected: this.files.current().data.name
+        };
     },
 
     _setTabbarItem: function() {

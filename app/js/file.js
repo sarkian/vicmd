@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 14, 21:17
+ * Last Change: 2013 Nov 18, 12:24
  */
 
 if(typeof vicmd === 'undefined')
@@ -38,6 +38,7 @@ vicmd.File = function(data) {
         selfjq.parent().find('.file-item').removeClass('active');
         selfjq.addClass('active');
         parent()._setCurrent(this);
+        parent().getTab().historySet(this.data.name);
         var height = parentjq().height();
         var filepos = selfjq.position().top;
         var scrollpos = Math.abs(parseInt(parentjq().find('.mCSB_container').get(0).style.top));
