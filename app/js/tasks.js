@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 18, 00:39
+ * Last Change: 2013 Nov 18, 17:25
  */
 
 if(typeof vicmd === 'undefined')
@@ -25,6 +25,7 @@ vicmd.Tasks = function(wrapper) {
 
     self.show = function() {
         var height = parseInt($(document).height() / 3);
+        $wrapper.parent().css('display', 'table-row');
         $wrapper.parent().animate({
             'height': height + 'px'
         }, 300, function() {
@@ -40,6 +41,7 @@ vicmd.Tasks = function(wrapper) {
         }, 300, function() {
             $('.tabfiles-item').mCustomScrollbar('update');
             ui.panes.current().tabs.current().files.current().select();
+            $wrapper.parent().css('display', 'none');
         });
         visible = false;
     };

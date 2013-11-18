@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 15, 16:10
+ * Last Change: 2013 Nov 18, 21:20
  */
 
 $(function() {
@@ -14,18 +14,31 @@ $(function() {
         }
     });
 
-    kbd.map('<count>j', function(c) {
-        console.log('j: ' + c);
+    kbd.map('J', function(e) {
+        console.log('down');
     });
 
-    kbd.map('<count>dd', function(c) {
-        console.log('dd: ' + c);
+    kbd.map('K', function(c) {
+        console.log('up');
     });
 
-    kbd.map('tt', function() {
-        console.log('tt');
+    kbd.map('<Esc>', function() {
+        console.log('Escape');
     });
 
+    kbd.map('<C-[>', function() {
+        console.log('Esc');
+    })
+
+    kbd.map(/./, function(e) {
+        console.log(e.getChar());
+    });
+
+
+    var fname = 'MyFile';
+    var query = 'myr';
+    var exp = new RegExp(query, 'gi');
+    console.log(exp.test(fname));
 
 
 });

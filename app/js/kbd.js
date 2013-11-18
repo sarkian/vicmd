@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 15, 16:34
+ * Last Change: 2013 Nov 18, 21:12
  */
 
 if(typeof vicmd === 'undefined')
@@ -15,19 +15,25 @@ vicmd.Kbd = function(options) {
         process_modifiers: false,
         retval: false,
         timeout: 1000,
+        default_mode: 'normal',
         showfunc: function() {},
+        onSetMode: function() {},
         cancel_keys: ['<Esc>', '<C-[>']
     }, options);
 
     var self = this;
     var caps_pressed = false;
     var mappings = [];
-    var current_mode = 'normal';
+    var current_mode = '';
     var timer = -1;
     var wait_seqs = [];
+    var cancel_seqs = [];
+
+    for(var s_ in options.cancel_keys)
+        cancel_seqs.push(new vicmd.Kbd.KeySeq(options.cancel_keys[s_]));
 
     options.target.addEventListener('keydown', function(e) {
-        // var event = new vicmd.Kbd.KeyEvt(e.originalEvent);
+        // var event = new vicmd.Kbd.KeyEvt(e.originalEvent); // if bind with jQuery
         var event = new vicmd.Kbd.KeyEvt(e);
         if(options.caps_as_ctrl) {
             if(event.code === 20) {
@@ -52,7 +58,12 @@ vicmd.Kbd = function(options) {
     }
 
     this.map = function(seq_str, action, mode) {
-        mode = mode || 'normal';
+        if(mode instanceof Array) {
+            for(var m in mode)
+                this.map(seq_str, action, mode[m]);
+            return;
+        }
+        mode = mode || options.default_mode;
         var seq = new vicmd.Kbd.KeySeq(seq_str);
         if(!mappings[mode])
             mappings[mode] = [];
@@ -65,12 +76,21 @@ vicmd.Kbd = function(options) {
     };
 
     this.setMode = function(mode) {
-        current_mode = mode || normal;
+        mode = mode || options.default_mode;
+        options.onSetMode(current_mode, mode);
+        current_mode = mode;
     };
 
     function processEvent(event) {
         if(!mappings[current_mode])
             return;
+        for(var cs in cancel_seqs) {
+            if(cancel_seqs[cs].first().equals(event)) {
+                var r = wait_seqs.length;
+                stopTimer();
+                if(r) return;
+            }
+        }
         var seqs = wait_seqs.length ? wait_seqs.slice(0) : mappings[current_mode];
         wait_seqs = [];
         for(var s in seqs) {
@@ -81,7 +101,7 @@ vicmd.Kbd = function(options) {
                 continue;
             else if(seq.len() == 1) {
                 stopTimer();
-                seq.processAction();
+                seq.processAction(event);
                 return;
             }
             else {
@@ -102,9 +122,7 @@ vicmd.Kbd = function(options) {
         options.showfunc();
     }
 
-    for(var s_ in options.cancel_keys) {
-        this.map(options.cancel_keys[s_], stopTimer);
-    }
+    this.setMode(options.default_mode);
 
 };
 
@@ -173,6 +191,58 @@ vicmd.Kbd.key_chars[221] = "]";
 vicmd.Kbd.key_chars[222] = "'"; 
 /* key_chars }}}*/
 
+/*{{{ shift_chars */
+vicmd.Kbd.shift_chars = [];
+vicmd.Kbd.shift_chars[32] = " ";
+vicmd.Kbd.shift_chars[48] = ")";
+vicmd.Kbd.shift_chars[49] = "!";
+vicmd.Kbd.shift_chars[50] = "@";
+vicmd.Kbd.shift_chars[51] = "#";
+vicmd.Kbd.shift_chars[52] = "$";
+vicmd.Kbd.shift_chars[53] = "%";
+vicmd.Kbd.shift_chars[54] = "^";
+vicmd.Kbd.shift_chars[55] = "&";
+vicmd.Kbd.shift_chars[56] = "*";
+vicmd.Kbd.shift_chars[57] = "(";
+vicmd.Kbd.shift_chars[65]  = "A";
+vicmd.Kbd.shift_chars[66]  = "B";
+vicmd.Kbd.shift_chars[67]  = "C";
+vicmd.Kbd.shift_chars[68]  = "D";
+vicmd.Kbd.shift_chars[69]  = "E";
+vicmd.Kbd.shift_chars[70]  = "F";
+vicmd.Kbd.shift_chars[71]  = "G";
+vicmd.Kbd.shift_chars[72]  = "H";
+vicmd.Kbd.shift_chars[73]  = "I";
+vicmd.Kbd.shift_chars[74]  = "J";
+vicmd.Kbd.shift_chars[75]  = "K";
+vicmd.Kbd.shift_chars[76]  = "L";
+vicmd.Kbd.shift_chars[77]  = "M";
+vicmd.Kbd.shift_chars[78]  = "N";
+vicmd.Kbd.shift_chars[79]  = "O";
+vicmd.Kbd.shift_chars[80]  = "P";
+vicmd.Kbd.shift_chars[81]  = "Q";
+vicmd.Kbd.shift_chars[82]  = "R";
+vicmd.Kbd.shift_chars[83]  = "S";
+vicmd.Kbd.shift_chars[84]  = "T";
+vicmd.Kbd.shift_chars[85]  = "U";
+vicmd.Kbd.shift_chars[86]  = "V";
+vicmd.Kbd.shift_chars[87]  = "W";
+vicmd.Kbd.shift_chars[88]  = "X";
+vicmd.Kbd.shift_chars[89]  = "Y";
+vicmd.Kbd.shift_chars[90]  = "Z";
+vicmd.Kbd.shift_chars[186] = ":";
+vicmd.Kbd.shift_chars[187] = "+";
+vicmd.Kbd.shift_chars[188] = "<";
+vicmd.Kbd.shift_chars[189] = "_";
+vicmd.Kbd.shift_chars[190] = ">";
+vicmd.Kbd.shift_chars[191] = "?";
+vicmd.Kbd.shift_chars[192] = "~";
+vicmd.Kbd.shift_chars[219] = "{";
+vicmd.Kbd.shift_chars[220] = "|";
+vicmd.Kbd.shift_chars[221] = "}";
+vicmd.Kbd.shift_chars[222] = '"'; 
+/* shift_chars }}}*/
+
 /*{{{ key_codes */
 vicmd.Kbd.key_codes = {
     "tab":        9,
@@ -234,17 +304,19 @@ vicmd.Kbd.key_codes = {
 };
 /* key_codes }}}*/
 
-
 /*{{{ KeyEvt */
 vicmd.Kbd.KeyEvt = function(src) {
     this.code = 0;
     this.ctrl = false;
     this.shift = false;
     this.alt = false;
+    this._regexp = null;
     if(typeof src === 'string')
         return this.fromString(src);
     else if(src instanceof Event)
         return this.fromEvent(src);
+    else if(src instanceof RegExp)
+        return this.fromRegexp(src);
     else
         throw new vicmd.Kbd.InvalidArgumentError(
             src.constructor.name, 'Event');
@@ -270,10 +342,24 @@ vicmd.Kbd.KeyEvt.prototype = {
     },
 
     equals: function(event) {
-        return event.code === this.code
-            && event.ctrl === this.ctrl
-            && event.shift === this.shift
-            && event.alt === this.alt;
+        if(this._regexp)
+            return this._regexp.test(event.getChar());
+        else
+            return event.code === this.code
+                && event.ctrl === this.ctrl
+                && event.shift === this.shift
+                && event.alt === this.alt;
+    },
+
+    getChar: function() {
+        if(this.ctrl || this.alt) return '';
+        if(this.code === 32) return ' ';
+        if(this.code in vicmd.Kbd.shift_chars == false)
+            return '';
+        if(this.shift)
+            return vicmd.Kbd.shift_chars[this.code];
+        else
+            return vicmd.Kbd.key_chars[this.code];
     },
 
     toString: function() {
@@ -345,6 +431,11 @@ vicmd.Kbd.KeyEvt.prototype = {
             this.code = vicmd.Kbd.key_codes[key];
         }
         return this;
+    },
+
+    fromRegexp: function(exp) {
+        this._regexp = exp;
+        return this;
     }
 
 };
@@ -356,7 +447,6 @@ vicmd.Kbd.KeyEvt.modkey_abbrs = {
 };
 /* KeyEvt }}}*/
 
-
 /*{{{ KeySeq */
 vicmd.Kbd.KeySeq = function(src) {
     this._has_count = false;
@@ -365,11 +455,13 @@ vicmd.Kbd.KeySeq = function(src) {
     this._action = function() {};
     if(typeof src === 'string')
         return this.fromString(src);
-    else if(typeof src === 'object')
-        return this.fromEvents(src);
+    else if(src instanceof Array)
+        return this.fromArray();
+    else if(src instanceof RegExp)
+        return this.fromRegexp(src);
     else
         throw new vicmd.Kbd.InvalidArgumentError(
-            typeof src, 'String or Array of Event objects');
+            typeof src, 'String or Array');
 };
 
 vicmd.Kbd.KeySeq.prototype = {
@@ -416,11 +508,11 @@ vicmd.Kbd.KeySeq.prototype = {
         return seq;
     },
 
-    processAction: function() {
+    processAction: function(e) {
         if(this._has_count)
-            this._action(this._count.length ? parseInt(this._count) : 1);
+            this._action(e, this._count.length ? parseInt(this._count) : 1);
         else
-            this._action();
+            this._action(e);
     },
 
     toString: function() {
@@ -430,7 +522,11 @@ vicmd.Kbd.KeySeq.prototype = {
         return res.join('');
     },
 
-    fromEvents: function(events) {
+    fromRegexp: function(exp) {
+        this._events.push(new vicmd.Kbd.KeyEvt(exp));
+    },
+
+    fromArray: function(events) {
         for(var i in events)
             this._events.push(new vicmd.KbdEvt(events[i]));
     },

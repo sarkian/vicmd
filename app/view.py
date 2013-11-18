@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 15, 21:09
+# Last Change: 2013 Nov 18, 19:48
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -49,14 +49,17 @@ class View(QWebView):
         super(QWebView, self).__init__(parent)
 
     def keyPressEvent(self, e):
+        #print '%d %d' % (e.key(), e.nativeScanCode())
         if e.key() < 300:
             event = e
         else:
             if e.nativeScanCode() in self.key_codes:
                 code = self.key_codes[e.nativeScanCode()]
             else:
-                code = 0
+                code = e.key()
             event = QKeyEvent(QEvent.KeyPress, code, e.modifiers())
+        #print e.key()
         QWebView.keyPressEvent(self, event)
+        #QWebView.keyReleaseEvent(self, event)
         #print ('%d:' % e.nativeScanCode()).ljust(5) + str(e.key()).ljust(4) + ', # ' + e.text()
 

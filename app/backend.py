@@ -1,9 +1,10 @@
 # coding: utf-8
-# Last Change: 2013 Nov 17, 20:47
+# Last Change: 2013 Nov 18, 20:00
 
 import os
 import glob
 import json
+import time
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -25,12 +26,7 @@ class Backend(QObject):
     @pyqtSlot()
     def ready(self):
         self.loadState()
-        return
-        self.evalJS('ui.panes.selectLeft()')
-        self.evalJS('ui.panes.left.tabs.open("%s")' % os.path.expanduser('~'))
-        self.evalJS(u'ui.panes.right.tabs.open("/home/sarkian/Downloads/Кино")')
-        self.evalJS('ui.panes.left.tabs.select(0)')
-        self.evalJS('ui.panes.right.tabs.select(0)')
+        self.evalJS('ui.ready()')
 
     @pyqtSlot(str, result=QVariant)
     def readdir(self, path):
