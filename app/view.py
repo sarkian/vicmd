@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 18, 19:48
+# Last Change: 2013 Nov 18, 22:23
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -59,7 +59,7 @@ class View(QWebView):
                 code = e.key()
             event = QKeyEvent(QEvent.KeyPress, code, e.modifiers())
         #print e.key()
-        QWebView.keyPressEvent(self, event)
-        #QWebView.keyReleaseEvent(self, event)
+        #QWebView.keyPressEvent(self, event)
+        QWebView.keyReleaseEvent(self, event)
         #print ('%d:' % e.nativeScanCode()).ljust(5) + str(e.key()).ljust(4) + ', # ' + e.text()
 
