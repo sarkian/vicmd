@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 18, 21:24
+ * Last Change: 2013 Nov 19, 00:21
  */
 
 if(typeof vicmd === 'undefined')
@@ -136,14 +136,19 @@ vicmd.Files = function(tab) {
         console.log(query);
         var files = selfjq.find('.file-item.visible').toArray();
         var expr = new RegExp('^' + query, 'gi');
-        for(var f in files) {
-            var file = files[f];
-            if(expr.test(file.data.name)) {
-                file.select();
-                return;
+        function search() {
+            for(var f in files) {
+                var file = files[f];
+                if(expr.test(file.data.name)) {
+                    file.select();
+                    return true;;
+                }
             }
-            
+            return false;
         }
+        if(search()) return;
+        expr = new RegExp('.*' + query + '.*', 'gi');
+        search();
     };
 
     self.scrollUp = function(c) {

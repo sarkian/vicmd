@@ -1,8 +1,8 @@
 if(typeof vicmd === 'undefined')
     vicmd = {};
 
-vicmd.Tab = function(tabs, path) {
-    this.__init__(tabs, path);
+vicmd.Tab = function(tabs, path, show_hidden) {
+    this.__init__(tabs, path, show_hidden);
 };
 
 vicmd.Tab.prototype = {
@@ -16,9 +16,10 @@ vicmd.Tab.prototype = {
     files: null,
     show_hidden: false,
 
-    __init__: function(tabs, path) {
+    __init__: function(tabs, path, show_hidden) {
         this._tabs = tabs;
         this._path = path;
+        this.show_hidden = typeof show_hidden === 'boolean' ? show_hidden : false;
         this._setTabbarItem();
         this.files = new vicmd.Files(this);
         this.setPath(path);

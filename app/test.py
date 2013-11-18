@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-# Last Change: 2013 Nov 18, 12:16
+# Last Change: 2013 Nov 18, 23:54
 
 import os
 import argparse
@@ -11,6 +11,6 @@ from PyQt4.QtGui import *
 from PyQt4.QtWebKit import *
 
 
-a = {'a': 1}
-b = a or {}
-print b
+strdata = '{"some": false}'
+data = json.loads(strdata)
+print '%s' % data['some']

@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 18, 20:01
+# Last Change: 2013 Nov 19, 00:15
 
 import json
 
@@ -66,7 +66,9 @@ class State:
     def _loadPane(self, _pane):
         pane = self.data['panes'][_pane]
         for tab in pane['tabs']:
-            App.backend.evalJS(u'ui.panes.%s.tabs.open("%s")' % (_pane, tab['path']))
+            sh = 'true' if tab['show_hidden'] else 'false'
+            App.backend.evalJS(u'ui.panes.%s.tabs.open("%s", %s)'
+                    % (_pane, tab['path'], sh))
             for path in tab['history']:
                 App.backend.evalJS(u'ui.panes.%s.tabs.last().historyAdd("%s", "%s")'
                         % (_pane, path, tab['history'][path]))

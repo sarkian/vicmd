@@ -1,5 +1,5 @@
 /*
- * Last Change: 2013 Nov 18, 21:31
+ * Last Change: 2013 Nov 18, 22:38
  */
 
 html, body {
@@ -176,10 +176,10 @@ html, body {
     border-left-color: #224466;
 }
 .line .mode-ind.search {
-    background-color: #226644;
+    background-color: #226600;
 }
 .line .mode-ind.search:before {
-    border-left-color: #226644;
+    border-left-color: #226600;
 }
 
 .line .cmdline {

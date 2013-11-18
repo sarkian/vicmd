@@ -61,8 +61,8 @@ vicmd.Tabs.prototype = {
         return i >= this._tabs.length - 1 ? 0 : i + 1;
     },
 
-    open: function(path) {
-        var tab = new vicmd.Tab(this, path);
+    open: function(path, show_hidden) {
+        var tab = new vicmd.Tab(this, path, show_hidden);
         this._tabs.push(tab);
         tab._index = this._tabs.length - 1;
         return tab._index;

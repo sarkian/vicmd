@@ -115,6 +115,10 @@ vicmd.UI = function(container) {
         self.kbd.setMode('normal');
     }, 'search');
 
+    this.kbd.map('/', function() {
+        self.kbd.setMode('normal');
+    }, 'search');
+
     this.kbd.map('<C-h>', function() {
         self.line.cmdline.backspace();
         self.panes.current().tabs.current().files.search(self.line.cmdline.text());

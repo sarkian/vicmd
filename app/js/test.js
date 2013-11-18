@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 18, 21:20
+ * Last Change: 2013 Nov 19, 00:15
  */
 
 $(function() {
@@ -35,10 +35,11 @@ $(function() {
     });
 
 
-    var fname = 'MyFile';
-    var query = 'myr';
-    var exp = new RegExp(query, 'gi');
-    console.log(exp.test(fname));
+    function test(arg) {
+        // arg = typeof arg === 'boolean' ? arg : false;
+        console.log(arg);
+    }
+    test();
 
 
 });
