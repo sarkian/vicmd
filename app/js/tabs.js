@@ -8,20 +8,20 @@ vicmd.Tabs = function(container) {
 vicmd.Tabs.prototype = {
 
     _tabbar: null,
-    _pathbox: null,
+    pathbox: null,
     _tabfiles: null,
     _tabs: [],
     _current: 0,
 
     __init__: function(container) {
         this._tabbar = container.find('.tabbar');
-        this._pathbox = new vicmd.PathBox(container.find('.pathbox'));
+        this.pathbox = new vicmd.PathBox(container.find('.pathbox'));
         this._tabfiles = container.find('.tabfiles');
         this._tabs = [];
     },
 
     setFocus: function(focus) {
-        this._pathbox.setFocus(focus);
+        this.pathbox.setFocus(focus);
     },
 
     current: function() {

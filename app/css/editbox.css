@@ -1,0 +1,33 @@
+.editbox {
+    position: relative;
+}
+
+.editbox .textarea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+}
+
+.editbox .textarea .line {
+    display: block;
+    height: 15px;
+    line-height: 15px;
+    padding: 0;
+    margin: 0;
+    font-family: UbuntuMono;
+}
+
+.editbox .cursor {
+    display: block;
+    /*width: 8px;*/
+    width: 2px;
+    height: 15px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    /*background-color: #f00;*/
+    background-color: #fff;
+    /*opacity: 0.5;*/
+    /*box-shadow: 0px 0px 1px 1px #52a8ec;*/
+}

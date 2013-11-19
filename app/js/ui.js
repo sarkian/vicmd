@@ -99,6 +99,11 @@ vicmd.UI = function(container) {
         self.panes.current().tabs.current().files.toggleHidden();
     });
 
+    this.kbd.map('u', function() {
+        // self.kbd.setMode('insert');
+        // self.panes.current().tabs.pathbox.edit();
+    });
+
     this.kbd.map('b', function() {
         self.tasks.toggle();
     });
@@ -147,8 +152,12 @@ vicmd.UI = function(container) {
         self.panes.current().tabs.current().files.openCurrent();
     }, 'search');
 
+    this.kbd.map('I', function() {
+        self.panes.current().tabs.current().files.toggleHidden();
+    }, 'search');
+
     this.kbd.map(/./, function(e) {
-        self.line.cmdline.putChar(e.getChar());
+        self.line.cmdline.putText(e.getChar());
         // console.log(self.line.cmdline.text());
         self.panes.current().tabs.current().files.search(self.line.cmdline.text());
     }, 'search');

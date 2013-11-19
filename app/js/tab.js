@@ -28,6 +28,7 @@ vicmd.Tab.prototype = {
     },
 
     setPath: function(path) {
+        var curpath = this._path;
         if(this.files.setPath(path)) {
             this._path = path;
             if(path.length > 20)
@@ -35,19 +36,21 @@ vicmd.Tab.prototype = {
             else
                 var tabpath = path;
             this._tabbar_item.text(path);
-            this._tabs._pathbox.setPath(path);
+            this._tabs.pathbox.setPath(path);
             if(this._path in this._history)
                 this.files.selectByName(this._history[this._path]);
             else
                 this.files.select(0);
         } 
+        else
+            this._tabs.pathbox.setPath(curpath);
     },
 
     select: function() {
         this.files.focus();
         this._tabs._tabbar.find('.tab').removeClass('active');
         this._tabbar_item.addClass('active');
-        this._tabs._pathbox.setPath(this._path);
+        this._tabs.pathbox.setPath(this._path);
     },
 
     close: function() {

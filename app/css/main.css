@@ -1,5 +1,5 @@
 /*
- * Last Change: 2013 Nov 18, 22:38
+ * Last Change: 2013 Nov 19, 17:17
  */
 
 html, body {
@@ -70,7 +70,7 @@ html, body {
 }
 
 .pathbox.focus {
-    color: #fff;
+    color: #ddd;
 }
 
 .textbox {
@@ -183,14 +183,12 @@ html, body {
 }
 
 .line .cmdline {
-    display: block;
-    line-height: 15px;
-    padding: 0;
-    height: 15px;
     margin: 0 0 0 10px;
-    font-family: UbuntuMono;
     float: left;
 }
+
+
+
 
 
 #main {

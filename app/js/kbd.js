@@ -1,5 +1,6 @@
 /**
- * Last Change: 2013 Nov 18, 21:12
+ * Last Change: 2013 Nov 20, 02:05
+ * TODO: lang support
  */
 
 if(typeof vicmd === 'undefined')
@@ -47,6 +48,7 @@ vicmd.Kbd = function(options) {
         if((!options.process_modifiers && event.isModifier()) || event.isUnknown())
             return options.retval;
         processEvent(event);
+        e.preventDefault();
         return options.retval;
     });
 
@@ -354,6 +356,7 @@ vicmd.Kbd.KeyEvt.prototype = {
     getChar: function() {
         if(this.ctrl || this.alt) return '';
         if(this.code === 32) return ' ';
+        if(this.code === 13) return '\n';
         if(this.code in vicmd.Kbd.shift_chars == false)
             return '';
         if(this.shift)

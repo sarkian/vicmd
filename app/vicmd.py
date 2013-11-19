@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 18, 20:24
+# Last Change: 2013 Nov 19, 17:17
 
 import os
 import sys
@@ -47,11 +47,13 @@ class ViCmd:
         sm.addStyle('fonts')
         sm.addStyle('main')
         sm.addStyle('lib/jquery.mCustomScrollbar')
+        sm.addStyle('editbox')
         sm.addScript('lib/jquery')
         sm.addScript('lib/jquery.mousewheel')
         sm.addScript('lib/jquery.mCustomScrollbar')
         sm.addScript('tabs')
         sm.addScript('tab')
+        sm.addScript('editbox')
         sm.addScript('pathbox')
         sm.addScript('pane')
         sm.addScript('panes')

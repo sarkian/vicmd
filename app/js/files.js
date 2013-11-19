@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 19, 00:21
+ * Last Change: 2013 Nov 19, 16:00
  */
 
 if(typeof vicmd === 'undefined')
@@ -41,7 +41,7 @@ vicmd.Files = function(tab) {
             return true;
         }
         else {
-            alert(data.error);
+            // alert(data.error);
             return false;
         }
     };
@@ -133,7 +133,6 @@ vicmd.Files = function(tab) {
 
     self.search = function(query) {
         query = query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-        console.log(query);
         var files = selfjq.find('.file-item.visible').toArray();
         var expr = new RegExp('^' + query, 'gi');
         function search() {
