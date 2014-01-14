@@ -1,7 +1,8 @@
 /**
- * Last Change: 2013 Nov 20, 02:00
+ * Last Change: 2014 Jan 14, 13:01
  * TODO: autocomplete
  */
+
 
 if(typeof vicmd === 'undefined')
     vicmd = {};
@@ -14,13 +15,13 @@ vicmd.EditBox = function(options) {
         element: 'div',
         class: 'editbox',
         lines: 1,
-        cols: 1
+        cols: 255
     }, options);
 
     var self = document.createElement(options.element);
     var $self = $(self);
 
-    $self.addClass('editbox');
+    $self.addClass(options.class);
 
     self.area = new vicmd.EditBox.TextArea({
         lines: options.lines,
@@ -42,11 +43,15 @@ vicmd.EditBox = function(options) {
     };
 
     self.backspace = function() {
-        // TODO: implement
+        self.area.backspace();
+    };
+
+    self.del = function() {
+        self.area.del();
     };
 
     self.backword = function() {
-        // TODO: implement
+        self.area.backword();
     };
 
     return self;
@@ -119,6 +124,57 @@ vicmd.EditBox.TextArea = function(options) {
         self.currentLine().setText(self.currentLine().getText() + after);
     };
 
+    self.backspace = function() {
+        var curline = self.currentLine();
+        var before = curline.getTextBefore(box.cursor.pos().x);
+        var after = curline.getTextAfter(box.cursor.pos().x);
+        if(before.length) {
+            before = before.substr(0, before.length - 1);
+            curline.setText(before + after);
+            box.cursor.moveX(-1);
+        }
+        else if(box.cursor.pos().y) {
+            curline.remove();
+            box.cursor.moveY(-1);
+            curline = self.currentLine();
+            box.cursor.moveToLineEnd();
+            curline.setText(curline.getText() + after);
+        }
+    };
+
+    self.del = function() {
+        var curline = self.currentLine();
+        var before = curline.getTextBefore(box.cursor.pos().x);
+        var after = curline.getTextAfter(box.cursor.pos().x);
+        if(after.length) {
+            after = after.substr(1);
+            curline.setText(before + after);
+        }
+        else if(box.cursor.pos().y < self.linesCount() - 1) {
+            var nextline = self.getLine(box.cursor.pos().y + 1);
+            curline.setText(before + nextline.getText());
+            nextline.remove();
+        }
+    };
+
+    self.backword = function() {
+        var curline = self.currentLine();
+        var before = curline.getTextBefore(box.cursor.pos().x);
+        var after = curline.getTextAfter(box.cursor.pos().x);
+        if(before.length) {
+            before = before.replace(/[\s\t]+$/, '').replace(/[a-zA-Zа-яА-ЯёЁ0-9]+$|[^a-zA-Zа-яА-ЯёЁ0-9]$/, '');
+            curline.setText(before + after);
+            box.cursor.moveTo(before.length, -1);
+        }
+        else if(box.cursor.pos().y) {
+            curline.remove();
+            box.cursor.moveY(-1);
+            curline = self.currentLine();
+            box.cursor.moveToLineEnd();
+            curline.setText(curline.getText() + after);
+        }
+    };
+
     function _lines() {
         return Array.prototype.slice.call(self.getElementsByTagName('pre'));
     }
@@ -188,6 +244,10 @@ vicmd.EditBox.Cursor = function(box) {
     };
 
     $self.addClass('cursor');
+
+    self.type = 'block';
+
+    $self.addClass(self.type);
     
     self.pos = function() {
         return pos;
@@ -217,7 +277,7 @@ vicmd.EditBox.Cursor = function(box) {
     self.moveTo = function(x, y) {
         if(x >= 0 && x <= box.area.currentLine().len())
             pos.x = x;
-        if(y >= 0 || y < box.area.linesCount())
+        if(y >= 0 && y < box.area.linesCount())
             pos.y = y;
         blinkStop();
         self.refresh();
@@ -248,15 +308,36 @@ vicmd.EditBox.Cursor = function(box) {
     };
 
     self.show = function() {
-        // TODO: implement
+        $self.addClass('visible');
     };
 
     self.hide = function() {
-        // TODO: implement
+        $self.removeClass('visible');
     };
 
-    self.setType = function() {
-        // TODO: implement
+    self.isHidden = function() {
+        return !$self.hasClass('visible');
+    };
+
+    self.toggle = function() {
+        if(self.isHidden()) {
+            self.show();
+            self.refresh();
+            blinkStart();
+        }
+        else {
+            blinkStop();
+            self.hide();
+        }
+    };
+
+    self.setType = function(type) {
+        blinkStop();
+        $self.removeClass(self.type);
+        $self.addClass(type);
+        self.type = type;
+        self.refresh();
+        blinkStart();
     };
 
     function moveX(amt) {

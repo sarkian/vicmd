@@ -1,5 +1,5 @@
 /**
- * Last Change: 2013 Nov 20, 01:39
+ * Last Change: 2014 Jan 14, 12:59
  */
 
 $(function() {
@@ -68,9 +68,32 @@ $(function() {
         box.text('new text');
     });
 
+    kbd.map('W', function() {
+        box.backword();
+    });
+
     kbd.map(/.|\n/, function(e) {
         box.putText(e.getChar());
-    })
+    });
+
+    kbd.map('<C-h>', function() {
+        box.backspace();
+    });
+    
+    kbd.map('<C-d>', function() {
+        box.del();
+    });
+
+    kbd.map('<C-c>', function() {
+        if(box.cursor.type === 'block')
+            box.cursor.setType('line');
+        else
+            box.cursor.setType('block');
+    });
+
+    kbd.map('<C-y>', function() {
+        box.cursor.toggle();
+    });
 
     box.text('okay something\nmore text');
     // box.putText('ok');

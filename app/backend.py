@@ -1,5 +1,5 @@
 # coding: utf-8
-# Last Change: 2013 Nov 18, 20:00
+# Last Change: 2014 Jan 14, 12:26
 
 import os
 import glob
@@ -70,6 +70,10 @@ class Backend(QObject):
     def saveState(self, _state):
         state = State().fromQVariant(_state)
         state.save(os.path.join(self.appdir, 'state.json'))
+
+    @pyqtSlot()
+    def quit(self):
+        App.app.quit()
 
     def evalJS(self, code):
         App.view.page().mainFrame().evaluateJavaScript(code)

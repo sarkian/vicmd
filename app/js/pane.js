@@ -20,6 +20,9 @@ vicmd.Pane.prototype = {
         $('.pane').removeClass('active');
         this._container.addClass('active');
         this.tabs.setFocus(focus);
+        var a = {
+
+        };
     },
 
     saveState: function() {

@@ -11,6 +11,14 @@ vicmd.UI = function(container) {
         onSetMode: function(oldmode, newmode) {
             self.line.mode_ind.setMode(newmode);
             self.line.cmdline.text('');
+            switch(newmode) {
+                case 'search':
+                    self.line.cmdline.cursor.show()
+                    break;
+                case 'normal':
+                    self.line.cmdline.cursor.hide()
+                    break;
+            }
         }
     });
 
@@ -107,6 +115,11 @@ vicmd.UI = function(container) {
     this.kbd.map('b', function() {
         self.tasks.toggle();
     });
+
+    this.kbd.map('q', function() {
+        self.saveState();
+        backend.quit();
+    }, 'normal');
 
     this.kbd.map('/', function() {
         self.kbd.setMode('search');
