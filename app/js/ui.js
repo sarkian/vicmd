@@ -13,10 +13,11 @@ vicmd.UI = function(container) {
             self.line.cmdline.text('');
             switch(newmode) {
                 case 'search':
-                    self.line.cmdline.cursor.show()
+                    self.line.cmdline.cursor.setType('line');
+                    self.line.cmdline.cursor.show();
                     break;
                 case 'normal':
-                    self.line.cmdline.cursor.hide()
+                    self.line.cmdline.cursor.hide();
                     break;
             }
         }
